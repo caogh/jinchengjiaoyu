@@ -1,92 +1,144 @@
-$(document).ready(function(){
+/* =================================
+------------------------------------
+	Academica - Learning Page Template
+	Version: 1.0
+ ------------------------------------ 
+ ====================================*/
 
-toggle_nav_container();
-gotoByScroll();
 
+'use strict';
+
+$(window).on('load', function() {
+	/*------------------
+		Preloder
+	--------------------*/
+	$(".loader").fadeOut(); 
+	$("#preloder").delay(400).fadeOut("slow");
 
 });
 
+(function($) {
+
+	/*------------------
+		Navigation
+	--------------------*/
+	$('.nav-switch').on('click', function(event) {
+		$('.main-menu').slideToggle(400);
+		event.preventDefault();
+	});
 
 
-var toggle_nav_container = function () {
-
-
-
-	var 	$toggleButton = $('#toggle_m_nav');
-			$navContainer = $('#m_nav_container');
-			$menuButton = $('#m_nav_menu')
-			$menuButtonBars = $('.m_nav_ham');
-			$wrapper = $('#wrapper');
-
-	// toggle the container on click of button (can be remapped to $menuButton)
-
-	$toggleButton.on("click", function(){
-
-		// declare a local variable for the window width
-		var $viewportWidth = $(window).width();
-
-		// if statement to determine whether the nav container is already toggled or not
-
-		if($navContainer.is(':hidden'))
-		{	
-			$wrapper.removeClass('closed_wrapper');
-			$wrapper.addClass("open_wrapper");
-			$navContainer.slideDown(200).addClass('container_open').css("z-index", "2");
-			// $(window).scrollTop(0);
-			$menuButtonBars.removeClass('button_closed');
-			$menuButtonBars.addClass('button_open');
-			$("#m_ham_1").addClass("m_nav_ham_1_open");
-			$("#m_ham_2").addClass("m_nav_ham_2_open");
-			$("#m_ham_3").addClass("m_nav_ham_3_open");
-
-		}
-		else
-		{
-			$navContainer.css("z-index", "0").removeClass('container_open').slideUp(200)
-			$menuButtonBars.removeClass('button_open')
-			$menuButtonBars.addClass('button_closed')
-			$wrapper.removeClass('open_wrapper')
-			$wrapper.addClass("closed_wrapper")
-			$("#m_ham_1").removeClass("m_nav_ham_1_open");
-			$("#m_ham_2").removeClass("m_nav_ham_2_open");
-			$("#m_ham_3").removeClass("m_nav_ham_3_open");
-
-		}
+	/*------------------
+		Background set
+	--------------------*/
+	$('.set-bg').each(function() {
+		var bg = $(this).data('setbg');
+		$(this).css('background-image', 'url(' + bg + ')');
 	});
 
 
 
-}
+
+	/*------------------
+		Pricing switch
+	--------------------*/
+	$('.pricing-switch').on('click', function(event) {
+		$(this).toggleClass('annual');
+		$('.mp-chart').show();
+		$('.ap-chart').hide();
+		if($(this).hasClass('annual')){
+			$('.mp-chart').hide();
+			$('.ap-chart').show();
+		}
+	});
 
 
-// Function that takes the href value of links in the navbar and then scrolls 
-//the div on the page whose ID matches said value. This only works if you use 
-//a consistent naming scheme for the navbar anchors and div IDs
+	/*------------------
+		Course Carousel
+	--------------------*/
+    $('.course-slider').owlCarousel({
+		loop:true,
+		autoplay:true,
+		margin:30,
+		nav:false,
+		dots: true,
+		responsive:{
+			0:{
+				items:1,
+				margin:10
+			},
+			800:{
+				items:2
+			},
+			1000:{
+				items:3
+			}
+		}
+	});
 
-var gotoByScroll = function (){
 
-	$(".m_nav_item a").on("click", function(e) {
+	/*------------------
+		Review Slider
+	--------------------*/
+	$('.review-slider').owlCarousel({
+        loop: true,
+        margin: 0,
+        nav: false,
+        items: 1,
+        dots: false,
+        autoplay: true,
+    });
 
+
+
+	/*------------------
+		Accordions
+	--------------------*/
+	$('.panel-link').on('click', function (e) {
+		$('.panel-link').removeClass('active');
+		var $this = $(this);
+		if (!$this.hasClass('active')) {
+			$this.addClass('active');
+		}
 		e.preventDefault();
-		// var $divID =$(this).attr("href");
-		// var $scrollToDiv = "$(" + "'" + $divID + "'" +")";
-		
-		$('html,body').animate({
-   scrollTop: $($(this).attr("href")).offset().top - 50
-}, "slow");
+	});
+
+
+
+	/*------------------
+		Circle progress
+	--------------------*/
+	$('.circle-progress').each(function() {
+		var cpvalue = $(this).data("cpvalue");
+		var cpid 	= $(this).data("cpid");
+
+		$(this).append('<div class="'+ cpid +'"></div><div class="progress-info"><h2>'+ cpvalue +'%</h2></div>');
+
+		if (cpvalue < 100) {
+
+			$('.' + cpid).circleProgress({
+				value: '0.' + cpvalue,
+				size: 176,
+				thickness: 2,
+				fill: {
+				      gradient: [ "#7076fc","#185dd0"]
+				},
+				emptyFill: "rgba(0, 0, 0, 0)"
+			});
+		} else {
+			$('.' + cpid).circleProgress({
+				value: 1,
+				size: 176,
+				thickness: 2,
+				fill: {
+				    gradient: [ "#7076fc","#185dd0"]
+				},
+				emptyFill: "rgba(0, 0, 0, 0)"
+			});
+		}
 
 	});
-		
 
 
-
-}
-
-
-
-
-
-
-
-
+})(jQuery);
 
